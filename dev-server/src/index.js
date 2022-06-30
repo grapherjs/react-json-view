@@ -17,7 +17,14 @@ ReactDom.render(
             sortKeys
             autoEscape
             caseSensitive={false}
-            searchWords={['string', 'is', '3', 'test']}
+            searchWords={[
+                'string',
+                'is',
+                '3',
+                'test',
+                'parent',
+                'empty_object'
+            ]}
             highlightStyle={{ backgroundColor: 'yellow' }}
             style={{ padding: '30px', backgroundColor: 'white' }}
             src={getExampleJson1()}

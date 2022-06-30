@@ -1,6 +1,6 @@
 import React from 'react';
 import AutosizeTextarea from 'react-textarea-autosize';
-
+import { highlight } from './../helpers/highlight-words-core';
 import { toType } from './../helpers/util';
 import dispatcher from './../helpers/dispatcher';
 import parseInput from './../helpers/parseInput';
@@ -55,9 +55,24 @@ class VariableEditor extends React.PureComponent {
             onDelete,
             onSelect,
             displayArrayKey,
-            quotesOnKeys
+            quotesOnKeys,
+            //
+            autoEscape,
+            caseSensitive,
+            searchWords,
+            highlightStyle,
+            highlightClassName
         } = this.props;
         const { editMode } = this.state;
+
+        const options = {
+            autoEscape,
+            caseSensitive,
+            searchWords,
+            highlightStyle,
+            highlightClassName
+        };
+
         return (
             <div
                 {...Theme(theme, 'objectKeyVal', {
@@ -78,7 +93,10 @@ class VariableEditor extends React.PureComponent {
                             {...Theme(theme, 'array-key')}
                             key={variable.name + '_' + namespace}
                         >
-                            {variable.name}
+                            {highlight({
+                                ...options,
+                                textToHighlight: variable.name
+                            })}
                             <div {...Theme(theme, 'colon')}>:</div>
                         </span>
                     ) : null
@@ -93,7 +111,10 @@ class VariableEditor extends React.PureComponent {
                                 <span style={{ verticalAlign: 'top' }}>"</span>
                             )}
                             <span style={{ display: 'inline-block' }}>
-                                {variable.name}
+                                {highlight({
+                                    ...options,
+                                    textToHighlight: variable.name
+                                })}
                             </span>
                             {!!quotesOnKeys && (
                                 <span style={{ verticalAlign: 'top' }}>"</span>
