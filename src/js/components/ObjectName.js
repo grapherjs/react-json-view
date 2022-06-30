@@ -1,5 +1,6 @@
 import React from 'react';
 import Theme from './../themes/getStyle';
+import { highlight } from './../helpers/highlight-words-core';
 
 export default function getObjectName(props) {
     const {
@@ -9,8 +10,22 @@ export default function getObjectName(props) {
         theme,
         jsvRoot,
         name,
-        displayArrayKey
+        displayArrayKey,
+        //
+        autoEscape,
+        caseSensitive,
+        searchWords,
+        highlightStyle,
+        highlightClassName
     } = props;
+
+    const options = {
+        autoEscape,
+        caseSensitive,
+        searchWords,
+        highlightStyle,
+        highlightClassName
+    };
 
     const display_name = props.name ? props.name : '';
 
@@ -19,7 +34,9 @@ export default function getObjectName(props) {
     } else if (parent_type == 'array') {
         return displayArrayKey ? (
             <span {...Theme(theme, 'array-key')} key={namespace}>
-                <span class="array-key">{display_name}</span>
+                <span class="array-key">
+                    {highlight({ ...options, textToHighlight: display_name })}
+                </span>
                 <span {...Theme(theme, 'colon')}>:</span>
             </span>
         ) : (
@@ -32,7 +49,12 @@ export default function getObjectName(props) {
                     {quotesOnKeys && (
                         <span style={{ verticalAlign: 'top' }}>"</span>
                     )}
-                    <span>{display_name}</span>
+                    <span>
+                        {highlight({
+                            ...options,
+                            textToHighlight: display_name
+                        })}
+                    </span>
                     {quotesOnKeys && (
                         <span style={{ verticalAlign: 'top' }}>"</span>
                     )}
